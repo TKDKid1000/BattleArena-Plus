@@ -1,0 +1,11 @@
+combatlog:
+  time: 15
+  message: "&4You are now in combat with {player} for 15 seconds!"
+  logoutmessage: "&4{player} logged out while in combat!"
+  nocombatmessage: "&aYou are no longer in combat!"
+sidebar:
+  title: "&e&lKitPvP+"
+  date: true
+  combatlog: "&7Combat Log: &6{time}"
+  money: "&7Money: &6{balance}"
+  website: "&ewww.tkdkid1000.net"
