@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -45,6 +47,7 @@ public class CombatLog implements Listener {
 	
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
+		if (event.isCancelled()) return;
 		if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
 			Player damager = (Player) event.getDamager();
 			Player target = (Player) event.getEntity();
@@ -65,6 +68,23 @@ public class CombatLog implements Listener {
 			log.remove(event.getPlayer().getUniqueId());
 			event.getPlayer().setHealth(0);
 			event.setQuitMessage(ChatColor.translateAlternateColorCodes('&', KitPvP.getInstance().getConfig().getString("combatlog.logoutmessage")));
+		}
+	}
+	
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		if (getLog().containsKey(event.getEntity().getUniqueId())) {
+			getLog().remove(event.getEntity().getUniqueId());
+		}
+	}
+	
+	@EventHandler
+	public void onChat(AsyncPlayerChatEvent event) {
+		if (KitPvP.getInstance().getConfig().getStringList("combatlog.cmds").contains(event.getMessage().toLowerCase())) {
+			if (getLog().containsKey(event.getPlayer().getUniqueId())) {
+				event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', KitPvP.getInstance().getConfig().getString("combatlog.cmdmessage")));
+				event.setCancelled(true);
+			}
 		}
 	}
 

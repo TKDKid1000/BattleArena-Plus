@@ -2,7 +2,6 @@ package net.tkdkid1000.kitpvp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Bukkit;
@@ -21,7 +20,6 @@ import me.lucko.helper.metadata.MetadataMap;
 import me.lucko.helper.scoreboard.Scoreboard;
 import me.lucko.helper.scoreboard.ScoreboardObjective;
 import me.lucko.helper.scoreboard.ScoreboardProvider;
-import net.md_5.bungee.api.ChatColor;
 
 public class Sidebar {
 
@@ -33,15 +31,20 @@ public class Sidebar {
 		BiConsumer<Player, ScoreboardObjective> updater = (p, obj) -> {
 			obj.setDisplayName(config.getString("sidebar.title"));
 			List<String> lines = new ArrayList<String>();
-			if (config.getBoolean("sidebar.date")) {
-				lines.add("&7" + new java.sql.Date(System.currentTimeMillis()).toString().replace("-", "/"));
-				lines.add("");
-			}
 			if (KitPvP.getInstance().getCombatLog().getLog().containsKey(p.getUniqueId())) {
 				lines.add(config.getString("sidebar.combatlog").replace("{time}", ""+KitPvP.getInstance().getCombatLog().getLog().get(p.getUniqueId())/20));
 				lines.add("");
 			}
-			lines.add(config.getString("sidebar.money").replace("{balance}", ""+ess.getUser(p).getMoney().doubleValue()));
+			config.getStringList("sidebar.lines").forEach(line -> {
+				lines.add(line
+						.replace("{date}", new java.sql.Date(System.currentTimeMillis()).toString().replace("-", "/"))
+						.replace("{balance}", ""+ess.getUser(p).getMoney().doubleValue())
+						.replace("{kills}", ""+KitPvP.getInstance().getStats().getUser(p.getUniqueId().toString()).getInt("kills"))
+						.replace("{killstreakmax}", ""+KitPvP.getInstance().getStats().getUser(p.getUniqueId().toString()).getInt("killstreakmax"))
+						.replace("{killstreak}", ""+KitPvP.getInstance().getStats().getUser(p.getUniqueId().toString()).getInt("killstreak"))
+						.replace("{deaths}", ""+KitPvP.getInstance().getStats().getUser(p.getUniqueId().toString()).getInt("deaths"))
+						);
+			});
 			lines.add("");
 			lines.add(config.getString("sidebar.website"));
 			obj.applyLines(lines);

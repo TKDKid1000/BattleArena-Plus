@@ -1,4 +1,4 @@
-name: KitPvP-Plus
+name: BattleArena-Plus
 version: ${project.version}
 main: net.tkdkid1000.kitpvp.KitPvP
 author: TKDKid1000

@@ -1,11 +1,34 @@
 combatlog:
   time: 15
-  message: "&4You are now in combat with {player} for 15 seconds!"
-  logoutmessage: "&4{player} logged out while in combat!"
-  nocombatmessage: "&aYou are no longer in combat!"
+  message: '&4You are now in combat with {player} for 15 seconds!'
+  logoutmessage: '&4{player} logged out while in combat!'
+  nocombatmessage: '&aYou are no longer in combat!'
+  cmds:
+  - /spawn
+  - /warp
+  cmdmessage: '&4You cannot use that command in combat!'
 sidebar:
-  title: "&e&lKitPvP+"
-  date: true
-  combatlog: "&7Combat Log: &6{time}"
-  money: "&7Money: &6{balance}"
-  website: "&ewww.tkdkid1000.net"
+  title: '&e&lBattleArena+'
+  combatlog: '&7Combat Log: &6{time}'
+  lines:
+  - '&6{date}'
+  - '&7Money: &6{balance}'
+  - '&7Kills: &6{kills}'
+  - '&7KillStreak: &6{killstreak} &7({killstreakmax})'
+  - '&7KDR: &6{kills}/{deaths}'
+  website: '&ewww.tkdkid1000.net'
+settings:
+  bowboost: -1
+  instantrespawn: true
+  nodamageticks: 1
+kills:
+  message: "&aYou killed {player} for {money}!"
+  min: 10.0
+  max: 50.0
+kits:
+  default:
+    item: iron_sword
+    name: "&aDefault kit"
+    lore:
+    - "&7Default Kit Items"
+    - "&7You can remove this kit if you want."
